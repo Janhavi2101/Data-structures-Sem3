@@ -1,0 +1,91 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 25
+
+int stack[MAX];
+int top = -1;
+
+void push(int n)
+{
+if (top >= MAX - 1)
+{
+printf("Stack Overflow\n");
+return;
+}
+top++;
+stack[top] = n;
+
+}
+int pop()
+{
+if (top < 0)
+{
+printf("Stack Underflow\n");
+return -1;
+}
+int n = stack[top];
+top--;
+return n;
+}
+int isOperator(char symbol)
+{
+if (symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/')
+{
+return 1;
+}
+return 0;
+}
+int evaluate(char *ex)
+{
+int i = 0;
+char c = ex[i];
+int op1, op2, op3;
+
+while (c != '\0')
+{
+if (c >= '0' && c <= '9')
+
+{
+int num = c - '0';
+push(num);
+}
+else if (isOperator(c))
+{
+op2 = pop();
+op1 = pop();
+switch (c)
+{
+case '+':
+op3 = op1 + op2;
+break;
+case '-':
+op3 = op1 - op2;
+break;
+case '*':
+op3 = op1 * op2;
+break;
+case '/':
+op3 = op1 / op2;
+break;
+}
+push(op3);
+}
+i++;
+c = ex[i];
+}
+op3 = pop();
+
+return op3;
+}
+
+int main()
+{
+char ex[MAX];
+//printf("Name: Janhavi Gangawane\nBatch: S12\nRoll no: 28\n\n");
+printf("Enter the Postfix Expression:\n");
+fgets(ex, MAX, stdin);
+int result = evaluate(ex);
+printf("Solution for the given Postfix Equation is: %d\n", result);
+return 0;
+}
