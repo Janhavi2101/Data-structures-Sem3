@@ -1,0 +1,161 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node* next;
+};
+
+struct sll{
+    struct node* head;
+};
+
+void traverse(struct sll s){
+    while(s.head!=NULL){
+        printf("%5d",s.head->data);
+        s.head = s.head->next;
+    }
+    printf("\n");
+}
+
+void addfront(struct sll* s1,struct node* val){
+    val->next = s1->head;
+    s1->head = val;
+}
+
+void deletefront(struct sll* s1){
+    struct node* temp = s1->head;
+    s1->head = s1->head->next;
+    free(temp);
+}
+
+void deleteend(struct sll* s1){
+    struct node* nodeptr = s1->head;
+    while(nodeptr->next->next != NULL){
+        nodeptr = nodeptr->next;
+    }
+    struct node* nodeptr2 = nodeptr->next;
+    nodeptr->next = NULL;
+    free(nodeptr2);
+}
+
+void addend(struct sll* s1 ,struct node* val){
+    struct node* nodeptr = s1->head;
+    while(nodeptr->next != NULL){
+        nodeptr = nodeptr->next;
+    }
+    nodeptr->next = val;
+    val->next = NULL;
+}
+
+void delpos(struct sll* x,int k){
+    struct node* mp,*temp;
+    mp = x->head;
+    while(mp!=NULL && k!=1){
+        mp = mp->next;
+        k--;
+    }
+    if(k>1) printf("Position is greater than size of the list\n");
+    else{
+        temp = mp->next->next;
+        free(mp->next);
+        mp->next = temp;
+    }
+}
+void addpos(struct sll *x, struct node* s, int k) {
+    struct node *mp, *temp;
+    mp = x->head;
+    while (mp->next != NULL && k!=1){
+        mp = mp->next;
+        k--;
+    }
+    if (k>1){
+        printf("Position is greater than size of the list.\n");
+    } 
+    else{
+        temp = mp->next;
+        mp->next = s;
+        s->next = temp;
+    }
+}
+
+int main(){
+    struct sll list1;
+    list1.head  = NULL;
+    struct sll* listptr = NULL;
+    int choice,pos;
+    struct node* node;
+    printf("Name: Janhavi Gangawane\nBatch: S12\nRoll no : 28\n\n");
+    while(1){
+    
+       listptr = &list1 ;
+        printf("Choose operation to be performed:\n");
+        printf("1.Addfront\t2.Deletefront\t3.Addend\t4.Deleteend\t5.Traverse\t6.AddAtPos\t7.DeleteAtPos\n");
+        scanf("%d",&choice);
+        switch(choice){
+            case 1:
+            node = (struct node*)malloc(sizeof(struct node));
+            printf("Enter the data of new node:\t ");
+			scanf("%d", &((*node).data));
+            (*node).next = NULL;
+            if((*listptr).head == NULL){
+                (*listptr).head = node;
+            }
+            else    addfront(listptr,node);
+            break;
+            case 2:
+            if( (*listptr).head==NULL){
+					printf("Selected list is empty. Can not delete from the front of the list.\n");
+				}
+				else    deletefront(listptr);
+                break;
+            case 3:
+            node = (struct node*)malloc(sizeof(struct node));
+            printf("Enter the data of new node: ");
+			scanf("%d", &((*node).data));
+            (*node).next = NULL;
+            if((*listptr).head == NULL){
+                (*listptr).head = node;
+            }
+            else    addend(listptr,node);
+            break;
+            case 4:
+            if(listptr->head == NULL)
+            printf("cannot delete from an empty list\n");
+            else{
+                if((*((*listptr).head)).next==NULL)
+                {
+                    free((*listptr).head);
+					(*listptr).head=NULL;
+                }
+                else{
+                    deleteend(listptr);
+                }
+            }
+            break;
+            case 5:
+			if( (*listptr).head == NULL )
+			printf("Empty list\n");
+            break;
+            case 6:
+            node = (struct node*)malloc(sizeof(struct node));
+            printf("Enter the data of new node: ");
+			scanf("%d", &((*node).data));
+            (*node).next = NULL;
+            printf("Enter position: ");
+            scanf("%d",&pos);
+            pos--;
+            addpos(listptr,node,pos);
+            break;
+            case 7:
+            printf("Enter position: ");
+            scanf("%d",&pos);
+            pos--;
+            delpos(listptr,pos);
+            break;
+            default: return 0;
+        }
+        if((*listptr).head != NULL)
+			traverse(*listptr);
+    }
+}
