@@ -1,0 +1,103 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct student
+{
+    unsigned int roll;
+};
+
+struct stack
+{
+    unsigned int MAX;
+    unsigned int TOP;
+    struct student *s1;
+};
+
+char isFull(struct stack x){
+    if(x.TOP == x.MAX){
+     printf(" Stack overflow. Cant push anything more into stack.\n");
+     return 1;
+    }
+    return 0;
+}
+
+char isEmpty(struct stack x){
+    if(x.TOP == -1){
+        printf("stack underflow. Cant pop anything from stack.");
+        return 1;
+    }
+    return 0;
+}
+
+struct student peek(struct stack x){
+    return (x.s1[x.TOP]);
+}
+
+void push(struct stack *x,struct student s){
+    (*x).TOP++;
+    (*x).s1[(*x).TOP] = s;
+}
+
+struct student pop(struct stack *x){
+    struct student temp = ((*x).s1[(*x).TOP]);
+    (*x).TOP--;
+    return temp; 
+}
+
+int main()
+{
+    struct student stud;
+    struct stack s;
+    int choice;
+   // printf("Name: Janhavi Gangawane\nBatch: S12\nRoll no: 28\n\n");
+    printf("Enter max no. of students: ");
+    scanf("%d", &s.MAX);
+    s.TOP = -1;
+    s.s1 = (struct student*)malloc((s.MAX)*sizeof(struct student));
+    while(1)
+    {
+        printf("Enter choice 1.Push 2.Pop 3.Peek 4.Check if stack is empty 5.Check if stack is full  6.Exit\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: if(isFull(s) != 1){
+                printf("Enter Roll number \n");
+                scanf("%u",&stud.roll);
+                push(&s,stud);
+            }
+            break;
+            case 2: if(isEmpty(s) != 1){
+               stud = pop(&s);
+                printf("Roll no. : %u \t\n",stud.roll);
+            }
+            break;
+            case 3: if(isEmpty(s) != 1){
+               stud = peek(s);
+               printf("Roll no. : %u \t \n",stud.roll);
+            }
+            else{
+                printf("Cannot peek into an empty stack\n");
+            }
+            break;
+
+            case 4: if(isEmpty(s)!=1){
+                printf("Stack is not empty.\n");
+            }
+            break;
+
+            case 5: if(isFull(s)!=1){
+                printf("Stack is not full.\n");
+            }
+            break;
+            case 6:
+            exit(0);
+            break;
+
+            default: printf("invalid input\n");
+            break;
+           
+        }
+        
+    }
+    return 0;
+}
