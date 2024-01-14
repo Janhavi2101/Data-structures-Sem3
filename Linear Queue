@@ -1,0 +1,122 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct student{
+    int roll_no;
+};
+
+struct queue{
+    int f,r,max;
+    struct student *s;
+};
+
+char isFull(struct queue* q){
+    if(q->f == q->max-1){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+char isEmpty(struct queue* q){
+    if(q->f < q->r){         
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+void enqueue(struct queue* q,struct student* s){
+    q->f++;
+    q->s[q->f] = *s;
+}
+
+struct student dequeue(struct queue* q){
+    struct student temp = q->s[q->r];
+    q->r++;
+    return temp;
+}
+
+struct student peek(struct queue* q,char ch){
+    switch(ch){
+        case 1:
+        return (q->s[q->r]);
+        break;
+        case 2:
+        return (q->s[q->f]);
+        break;
+    }
+}
+void main(){
+    struct queue q1,*qptr;
+    struct student *s1;
+    int q_ch,ch,peek_ch;
+    q1.f  = -1;
+    q1.r  = 0;
+  //  printf("Name: Janhavi Gangawane\nBatch: S12\nRoll no: 28\n\n");
+    printf("Enter max values for queue: \n");
+    scanf("%d",&q1.max);
+    q1.s = (struct student*)malloc(q1.max * sizeof(struct student));
+    while(1){
+        
+        qptr =  &q1 ;
+        printf("Select operation to be performed:\n");
+        printf("1.Enqueue\t2.Dequeue\t3.isFull\t4.isEmpty\t5.Peek\t0.Exit\n");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1:
+            if(isFull(qptr) == 1){
+                printf("Queue is full, cannot enqueue.\n");
+            }
+            else{
+                s1 = (struct student*)malloc(sizeof(struct student));
+                printf("Enter roll no. \n");
+                scanf("%d",&s1->roll_no);
+                enqueue(qptr,s1);
+            }
+            break;
+            case 2:
+            if(isEmpty(qptr) == 1){
+                printf("Queue is Empty, cannot dequeue.\n");
+            }
+            else{
+                *s1 = dequeue(qptr);
+                printf("Roll no. : %d\n",s1->roll_no);
+            }
+            break;
+            case 3:
+            if(isFull(qptr) == 1){
+                printf("Queue is full.\n");
+            }
+            else{
+                printf("Queue is not full.\n");
+            }
+            break;
+            case 4:
+            if(isEmpty(qptr) == 1){
+                printf("Queue is Empty.\n");
+            }
+            else{
+                printf("Queue is not Empty.\n");
+            }
+            break;
+            case 5:
+            if(isEmpty(qptr) == 1){
+                printf("Queue is Empty, cannot peek.\n");
+            }
+            else{
+                printf("1.Peek at Front\t2.Peek at End:\n");
+                scanf("%d",&peek_ch);
+                *s1 = peek(qptr,peek_ch);
+                printf("Roll no. : %d\n",s1->roll_no);
+            }
+            break;
+
+            case 0:
+            return;
+            default:printf("Invalid Input\n");
+        }
+    }
+}
